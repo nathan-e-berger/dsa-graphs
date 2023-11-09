@@ -293,8 +293,9 @@ describe("distanceOfShortestPath", function () {
     let t = new Node("T");
     let h = new Node("H");
     let m = new Node("M");
+    let s = new Node("S");
 
-    graph.addNodes([r, i, t, h, m]);
+    graph.addNodes([r, i, t, h, m, s]);
 
     graph.addEdge(r, i);
     graph.addEdge(r, t);
@@ -302,8 +303,10 @@ describe("distanceOfShortestPath", function () {
     graph.addEdge(i, t);
     graph.addEdge(t, h);
     graph.addEdge(h, m);
+    graph.addEdge(m, s);
 
     expect(graph.distanceOfShortestPath(r, m)).toBe(2);
+    expect(graph.distanceOfShortestPath(r, s)).toBe(3);
     expect(graph.distanceOfShortestPath(t, r)).toBe(1);
     expect(graph.distanceOfShortestPath(t, m)).toBe(2);
     expect(graph.distanceOfShortestPath(t, "rogue node")).toBe(undefined);

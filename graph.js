@@ -56,23 +56,89 @@ class Graph {
 
   /** traverse graph with DFS and returns array of Node values */
   depthFirstSearch(start, seen = new Set([start])) {
-    let nodeValues = [];
-    nodeValues.push(start.value);
+    /* recursive solution */
+    // let nodeValues = [];
+    // nodeValues.push(start.value);
 
-    for (let ads of start.adjacent) {
-      if (!seen.has(ads)) {
-        seen.add(ads);
-        return [...nodeValues, ...this.depthFirstSearch(ads, seen)];
+    // for (let ads of start.adjacent) {
+    //   if (!seen.has(ads)) {
+    //     seen.add(ads);
+    //     return [...nodeValues, ...this.depthFirstSearch(ads, seen)];
+    //   }
+    // }
+    // return nodeValues;
+
+    /* iterative solution */
+    let toVisitStack = [start];
+    let nodeValues = [];
+
+    while (toVisitStack.length > 0) {
+      let current = toVisitStack.pop();
+
+      nodeValues.push(current.value);
+
+      for (let node of current.adjacent) {
+        if (!seen.has(node)) {
+          seen.add(node);
+          toVisitStack.push(node);
+        }
       }
     }
+
     return nodeValues;
   }
 
   /** traverse graph with BFS and returns array of Node values */
-  breadthFirstSearch(start) { }
+  breadthFirstSearch(start) {
+    let toVisitQueue = [start];
+    let nodeValues = [];
+    let seen = new Set([start]);
+
+    while (toVisitQueue.length > 0) {
+      let current = toVisitQueue.shift();
+
+      nodeValues.push(current.value);
+
+      for (let node of current.adjacent) {
+        if (!seen.has(node)) {
+          seen.add(node);
+          toVisitQueue.push(node);
+        }
+      }
+    }
+
+    return nodeValues;
+  }
 
   /** find the distance of the shortest path from the start node to the end node */
-  distanceOfShortestPath(start, end) { }
+  distanceOfShortestPath(start, end) {
+    let toVisitQueue = [start];
+    let seen = new Set([start]);
+    let distance = 0;
+    let added = false;
+
+    while (toVisitQueue.length > 0 ) {
+      let current = toVisitQueue.shift();
+
+      if (current.value === end.value) {
+        break;
+      }
+
+      added = false;
+      for (let node of current.adjacent) {
+        if (!seen.has(node)) {
+          seen.add(node);
+          toVisitQueue.push(node);
+          added = true;
+        }
+      }
+
+      if (added) distance++;
+    }
+
+    if (!seen.has(end)) return undefined;
+    return distance;
+  }
 }
 
 module.exports = { Graph, Node };
